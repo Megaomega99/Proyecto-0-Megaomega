@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./Back
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./Back:/app
+    environment:
+      - DATABASE_URL=sqlite:///./sql_app.db  # Ajusta según tu base de datos
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+
+  frontend:
+    build: ./Front
+    ports:
+      - "8550:8550"
+    volumes:
+      - ./Front:/app
+    depends_on:
+      - backend
+    command: python mainfront.py
